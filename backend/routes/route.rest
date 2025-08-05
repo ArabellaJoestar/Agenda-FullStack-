@@ -1,0 +1,27 @@
+GET http://localhost:3000/agenda
+
+###
+
+POST http://localhost:3000/agenda
+Content-Type: application/json
+
+{
+    "title": "Limpar a casa",
+    "content": "Limpar a casa para receber visitas",
+    "expiration": "02/04/2026",
+    "needState": true
+}
+
+###
+
+DELETE http://localhost:3000/agenda/688e615ad487951ce98040f8
+
+
+####
+
+PATCH http://localhost:3000/agenda/688e3edc1f46dd576482fc07
+Content-Type: application/json
+
+{
+    "title": "dar o cu"
+}
