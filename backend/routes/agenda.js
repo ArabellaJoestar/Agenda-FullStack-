@@ -26,8 +26,7 @@ router.post("/", async (req, res) => {
     const noteTitle = req.body.title
     const noteContent = req.body.content
     const strNoteExpiration = req.body.expiration
-    const [day, month, year] = strNoteExpiration.split('/')
-    const noteExpiration = new Date(`${day}-${month}-${year}`)
+    const noteExpiration = new Date(strNoteExpiration)
     const noteState = req.body.noteState
     const needState = req.body.needState
 
@@ -56,7 +55,7 @@ router.patch("/:id", getNote, async (req, res) => {
     let noteExpiration
 
     if (strNoteExpiration) {
-        const [day, month, year] = strNoteExpiration.split('/')
+        const [day, month, year] = strNoteExpiration.split('-')
         noteExpiration = new Date(`${day}-${month}-${year}`)
     }
 
