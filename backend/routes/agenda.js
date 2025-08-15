@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
         res.json(notes)
     }
     catch (e) {
-        res.status(500).json({ message: err.message })
+        res.status(500).json({ message: e.message })
     }
 
 
@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
     const noteContent = req.body.content
     const strNoteExpiration = req.body.expiration
     const noteExpiration = new Date(strNoteExpiration)
-    const noteState = req.body.noteState
+    const noteState = req.body.state
     const needState = req.body.needState
 
 
@@ -72,8 +72,8 @@ router.patch("/:id", getNote, async (req, res) => {
     if (noteExpiration != null) {
         res.note.expiration = noteExpiration
     }
-    if (req.body.noteState != null) {
-        res.note.noteState = req.body.noteState
+    if (req.body.state != null) {
+        res.note.state = req.body.state
     }
     if (req.body.needState != null) {
         res.note.needState = req.body.needState

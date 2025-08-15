@@ -35,7 +35,8 @@ export default function Agenda(){
               {notas.map((nota) =>{
                 return <NoteComponent
                 note={nota}
-                onReload={handleReload}/>
+                onReload={handleReload}
+                />
               })}
 
         </div>

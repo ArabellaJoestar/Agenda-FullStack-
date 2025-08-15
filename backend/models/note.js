@@ -30,9 +30,6 @@ const noteSchema = new mongoose.Schema({
 
     state:{
         type: String,
-        default: function(){
-            return this.needState ? 'Em andamento' : ''
-        },
         required: function (){
            return this.needState === true
         } 
