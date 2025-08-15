@@ -65,13 +65,14 @@ export default function FormNote({ methodUse, styleFixed,
 
         const hasRequiredFields = !!title && !!content;
         let isExpirationValid = expiration ? expiration && new Date(expiration) > new Date() && new Date(expiration).getFullYear() < new Date().getFullYear() + 110 :
-            true
+            false
 
         const isStateValid = needState ? !!state : true
 
-        const formIsValid = hasRequiredFields && isExpirationValid && isStateValid;
+        const formIsValid = !needState && hasRequiredFields && isStateValid || needState &&hasRequiredFields && isStateValid && isExpirationValid;
 
         setCanSubmit(formIsValid)
+        console.log(needState, hasRequiredFields, isStateValid, expiration)
     }, [form])
 
 
@@ -150,13 +151,17 @@ export default function FormNote({ methodUse, styleFixed,
                 <textarea type="text" placeholder="Conteúdo da nota" className="border-1 border-white focus:border-white focus:border-1 duration-300 rounded-[5px] p-1 h-20" name="content" value={form.content} onChange={handleChange} />
             </div>
 
-            <div className="flex flex-col text-left w-full">
-                <label htmlFor="">Utiliza estado?</label>
-                <select name="needState" id="needState" className="border-1 border-white focus:border-white  focus:bg-blue-950 focus:border-1 duration-300 rounded-[5px] p-1" value={form.needState} onChange={handleChange}>
-                    <option value={false} className="rounded-2xl">Não</option>
-                    <option value={true}>Sim</option>
-                </select>
-            </div>
+            {methodUse === "PATCH" ? "" :
+
+                <div className={`flex flex-col text-left w-full`}>
+                    <label htmlFor="">Utiliza estado?</label>
+                    <select name="needState" id="needState" className="border-1 border-white focus:border-white  focus:bg-blue-950 focus:border-1 duration-300 rounded-[5px] p-1" value={form.needState} onChange={handleChange}>
+                        <option value={false} className="rounded-2xl">Não</option>
+                        <option value={true}>Sim</option>
+                    </select>
+                </div>}
+
+
 
             {form.needState ?
                 <div className="flex flex-col text-left w-full">
