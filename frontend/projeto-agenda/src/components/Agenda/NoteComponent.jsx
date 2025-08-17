@@ -35,7 +35,6 @@ export default function NoteComponent({note, onReload}) {
 
     const formattedExpiration = `${padTo2Digits(expirationDate.getUTCDate())}/${padTo2Digits(expirationDate.getUTCMonth() + 1)}/${expirationDate.getUTCFullYear()}`;
 
-    console.log(formattedExpiration)
 
     const [patching, setPatching] = useState(false)
 
@@ -100,7 +99,7 @@ export default function NoteComponent({note, onReload}) {
         onFinishPatch={handleFinishPatch}
         exitButtonAction = {exitFromPatch}
         
-        >{console.log(note.expiration)}</FormNote>
+        ></FormNote>
         
         
     )

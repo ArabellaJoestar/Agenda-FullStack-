@@ -4,6 +4,8 @@ export default function FormNote({ methodUse, styleFixed,
     useNote, onFinishPatch, exitButtonAction
 }) {
 
+
+
     const [form, setForm] = useState(() => {
 
         if (useNote) {
@@ -32,6 +34,13 @@ export default function FormNote({ methodUse, styleFixed,
 
     })
 
+    const [formFixed, setFormFixed] = useState(null)
+    useEffect(() => {
+        if (methodUse === 'PATCH' && useNote && !formFixed) {
+            setFormFixed({ ...form })
+        }
+    }, [useNote, methodUse, form, formFixed])
+
 
 
     const [canSubmit, setCanSubmit] = useState(false)
@@ -58,10 +67,8 @@ export default function FormNote({ methodUse, styleFixed,
 
 
     useEffect(() => {
+         if (!formFixed) return;
         const { title, content, expiration, needState, state } = form;
-
-
-
 
         const hasRequiredFields = !!title && !!content;
         let isExpirationValid = expiration ? expiration && new Date(expiration) > new Date() && new Date(expiration).getFullYear() < new Date().getFullYear() + 110 :
@@ -69,11 +76,32 @@ export default function FormNote({ methodUse, styleFixed,
 
         const isStateValid = needState ? !!state : true
 
-        const formIsValid = !needState && hasRequiredFields && isStateValid || needState &&hasRequiredFields && isStateValid && isExpirationValid;
+
+        const isFormEquals = () => {
+            const formKeys = Object.keys(form);
+            const formFixedKeys = Object.keys(formFixed);
+
+            if (formKeys.length !== formFixedKeys.length) {
+                return false;
+            }
+
+            for (let key of formKeys) {
+                if (form[key] !== formFixed[key]) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+
+
+        const formIsValid = !needState && hasRequiredFields && isStateValid && !isFormEquals() || needState && hasRequiredFields && isStateValid && isExpirationValid && !isFormEquals();
+
+
 
         setCanSubmit(formIsValid)
-        console.log(needState, hasRequiredFields, isStateValid, expiration)
-    }, [form])
+    }, [form, formFixed])
 
 
 
@@ -96,7 +124,7 @@ export default function FormNote({ methodUse, styleFixed,
                 expiration: form.expiration || null
             }
 
-            console.log(form.ToSend)
+
             const response = await fetch(urlFetch, {
                 method: methodUse,
                 headers: {
